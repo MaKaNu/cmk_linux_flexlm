@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo "<<<lnx_flexlm>>>"
+
+
+LMUTIL_EXE="/usr/local/MATLAB/current/etc/glnxa64/lmutil"
+
+DATA=$($LMUTIL_EXE lmstat -a)
+DATA_LIC=$($LMUTIL_EXE lmstat -i | tail -n +10)
+
+LICENSED_FEATURE=( $(echo "$DATA" | grep Users | awk '{print $3}' | sed "s/://g") )
+LICENSED_FEATURE_USE=( $(echo "$DATA" | grep Users | awk '{print $11}') )
+LICENSED_FEATURE_TOTAL=( $(echo "$DATA" | grep Users | awk '{print $6}') )
+
+LICENSED_EXPIRY_NAME=( $(echo "$DATA_LIC" | awk '{print $1}') )
+LICENSED_EXPIRY_DATE=( $(echo "$DATA_LIC" | awk '{print $5}') )
+
+declare -A EXPIRY_ARRAY
+
+for idx in ${!LICENSED_EXPIRY_NAME[@]}; do
+	EXPIRY_ARRAY["${LICENSED_EXPIRY_NAME[$idx]}"]="${LICENSED_EXPIRY_DATE[$idx]}"
+done
+
+for idx in ${!LICENSED_FEATURE[@]}; do
+	feature_name="${LICENSED_FEATURE[$idx]}"
+	feature_use="${LICENSED_FEATURE_USE[$idx]}"
+	feature_total="${LICENSED_FEATURE_TOTAL[$idx]}"
+	
+	if [[ -v EXPIRY_ARRAY[$feature_name] ]]; then
+		feature_expire_date="${EXPIRY_ARRAY[$feature_name]}"
+	else
+		feature_expire_date="None"
+	fi
+	echo "$feature_name $feature_use $feature_total $feature_expire_date"
+done
