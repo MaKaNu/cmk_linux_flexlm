@@ -14,12 +14,12 @@ from cmk.agent_based.v2 import (
     check_levels,
 )
 
-from cmk_addons.plugins.cmk_linux_flexlm.lib.logic import (
+from cmk_addons_plugins.lib.logic import (
     LicenseFeature,
     parse_legacy_string_table,
     parse_string_table,
 )
-from cmk_addons.plugins.cmk_linux_flexlm.lib.render import (
+from cmk_addons_plugins.lib.render import (
     render_days,
     render_use_of_total,
 )
