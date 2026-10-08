@@ -18,6 +18,7 @@ def _parameter_form_cmk_linux_flexlm():
                     title=Title("Upper levels for licenses in use"),
                     level_direction=LevelDirection.UPPER,
                     form_spec_template=Integer(),
+                    prefill_fixed_levels=InputHint(value=(0, 0)),
                 ),
             ),
             "levels_expiry": DictElement(
