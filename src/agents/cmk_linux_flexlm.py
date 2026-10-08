@@ -1,8 +1,9 @@
-# /usr/bin/env python3
+#!/usr/bin/env python3
 
 import json
 import os
 import re
+import shutil
 import subprocess
 from dataclasses import asdict, dataclass
 from datetime import UTC, date, datetime
@@ -84,6 +85,7 @@ def find_lmutil_via_systemd() -> str | None:
 
         if candidate.exists() and os.access(candidate, os.X_OK):
             return str(candidate)
+    return shutil.which("lmutil")
 
 
 def create_feature_from_match(match: re.Match) -> LicenseFeature:
