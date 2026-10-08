@@ -2,19 +2,19 @@
  'description': 'Please add a description here',
  'download_url': 'https://example.com/cmk_linux_flexlm/',
  'files': {
-    'agents': ['src/agents/cmk_linux_flexlm.py'] 
+    'agents': ['plugins/cmk_linux_flexlm.py'] 
     'cmk_plugins': [
-        'src/cmk_addons_plugins/agent_based/cmk_linux_flexlm.py',
-        'src/cmk_addons_plugins/bakery/bakery_cmk_linux_flexlm.py',
-        'src/cmk_addons_plugins/checkman/cmk_linux_flexlm',
-        'src/cmk_addons_plugins/graphing/graphing_cmk_linux_flexlm.py',
-        'src/cmk_addons_plugins/lib/logic.py',
-        'src/cmk_addons_plugins/lib/render.py',
-        'src/cmk_addons_plugins/rulesets/ruleset_cmk_linux_flexlm.py',
+        'cmk_linux_flexlm/agent_based/cmk_linux_flexlm.py',
+        'cmk_linux_flexlm/bakery/bakery_cmk_linux_flexlm.py',
+        'cmk_linux_flexlm/checkman/cmk_linux_flexlm',
+        'cmk_linux_flexlm/graphing/graphing_cmk_linux_flexlm.py',
+        'cmk_linux_flexlm/lib/logic.py',
+        'cmk_linux_flexlm/lib/render.py',
+        'cmk_linux_flexlm/rulesets/ruleset_cmk_linux_flexlm.py',
         ]
 },
  'name': 'cmk_linux_flexlm',
- 'title': 'Title of cmk_linux_flexlm',
+ 'title': 'CheckMK FlexLM Linux',
  'version': '1.0.0',
  'version.min_required': '2.5.0p6',
  'version.packaged': 'cmk-mkp-tool 3.0.0',

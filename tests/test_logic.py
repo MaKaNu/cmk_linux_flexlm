@@ -1,6 +1,6 @@
 from datetime import date
 
-from cmk_addons_plugins.lib.logic import (
+from cmk_addons.plugins.cmk_linux_flexlm.lib.logic import (
     LicenseFeature,
     parse_legacy_string_table,
     parse_string_table,
