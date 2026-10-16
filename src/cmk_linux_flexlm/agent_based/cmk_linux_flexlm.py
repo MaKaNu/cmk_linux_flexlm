@@ -2,24 +2,21 @@ import datetime
 from functools import partial
 from typing import Any
 
-from cmk.agent_based.v2 import (
+from cmk.agent_based.v2 import (  # type: ignore
     AgentSection,
     CheckPlugin,
     CheckResult,
     DiscoveryResult,
-    Result,
     Service,
-    State,
     StringTable,
     check_levels,
 )
-
-from cmk_linux_flexlm.lib.logic import (
+from cmk_addons.plugins.cmk_linux_flexlm.lib.logic import (
     LicenseFeature,
     parse_legacy_string_table,
     parse_string_table,
 )
-from cmk_linux_flexlm.lib.render import (
+from cmk_addons.plugins.cmk_linux_flexlm.lib.render import (
     render_days,
     render_use_of_total,
 )
@@ -53,19 +50,18 @@ agent_section_lnx_flexlm = AgentSection(
 
 
 def discover_cmk_linux_flexlm(section: list[LicenseFeature]) -> DiscoveryResult:
-    if not section:
-        return
-    yield Service()
+    for feature in sorted({f.feature for f in section}):
+        yield Service(item=feature)
 
 
 def check_cmk_linux_flexlm(
-    params: dict[str, Any], section: list[LicenseFeature]
+    item: str, params: dict[str, Any], section: list[LicenseFeature]
 ) -> CheckResult:
-    if not section:
-        yield Result(state=State.UNKNOWN, summary="No license features detected")
+    features = [f for f in section if f.feature == item]
+    if not features:
         return
 
-    for feature in section:
+    for feature in features:
         if feature.expires is not None:
             days_left = (
                 feature.expires - datetime.datetime.now(tz=datetime.UTC).date()
@@ -73,7 +69,7 @@ def check_cmk_linux_flexlm(
             yield from check_levels(
                 days_left,
                 levels_lower=params["levels_expiry"],
-                label=f"{feature.feature} expires in (days)",
+                label="Expires in (days)",
                 render_func=render_days,
             )
 
@@ -81,7 +77,7 @@ def check_cmk_linux_flexlm(
             feature.in_use,
             levels_upper=params["levels_upper"],
             metric_name=f"{feature.feature}_licenses",
-            label=f"{feature.feature} in use",
+            label="In use",
             boundaries=(0, feature.total),
             render_func=partial(render_use_of_total, total=feature.total),
         )
@@ -90,7 +86,7 @@ def check_cmk_linux_flexlm(
 check_plugin_cmk_linux_flexlm = CheckPlugin(
     name="cmk_linux_flexlm",
     sections=["cmk_linux_flexlm"],
-    service_name="FlexLM License Status",
+    service_name="FlexLM License %s",
     discovery_function=discover_cmk_linux_flexlm,
     check_function=check_cmk_linux_flexlm,
     check_ruleset_name="cmk_linux_flexlm",
