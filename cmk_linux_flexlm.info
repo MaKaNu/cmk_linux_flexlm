@@ -1,5 +1,5 @@
 {'author': 'Matti Kaupenjohann',
- 'description': 'Please add a description here',
+ 'description': 'Plugin to check flexlm license usage.',
  'download_url': 'https://github.com/MaKaNu/cmk_linux_flexlm',
  'files': {'agents': ['plugins/cmk_linux_flexlm.py'],
            'cmk_addons_plugins': ['cmk_linux_flexlm/agent_based/cmk_linux_flexlm.py',
@@ -13,5 +13,5 @@
  'title': 'CheckMK FlexLM Linux',
  'version': '1.0.0',
  'version.min_required': '2.5.0p6',
- 'version.packaged': 'cmk-mkp-tool 3.0.0',
+ 'version.packaged': 'mkp-forge 0.0.1',
  'version.usable_until': None}

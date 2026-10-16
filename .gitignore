@@ -221,6 +221,6 @@ __marimo__/
 
 .vscode/
 
-!src/cmk_plugins/*/lib
+!src/*/lib
 
 mkp_package/
