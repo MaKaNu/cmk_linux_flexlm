@@ -8,6 +8,7 @@ from cmk.agent_based.v2 import (  # type: ignore
     CheckResult,
     DiscoveryResult,
     Service,
+    ServiceLabel,
     StringTable,
     check_levels,
 )
@@ -50,8 +51,11 @@ agent_section_lnx_flexlm = AgentSection(
 
 
 def discover_cmk_linux_flexlm(section: list[LicenseFeature]) -> DiscoveryResult:
-    for feature in sorted({f.feature for f in section}):
-        yield Service(item=feature)
+    for feature in sorted(section, key=lambda f: f.feature):
+        yield Service(
+            item=feature.feature,
+            labels=[ServiceLabel("flexlm/lic-count", str(feature.total))],
+        )
 
 
 def check_cmk_linux_flexlm(

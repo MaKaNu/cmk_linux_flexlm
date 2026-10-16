@@ -7,7 +7,7 @@ from cmk.rulesets.v1.form_specs import (
     LevelDirection,
     SimpleLevels,
 )
-from cmk.rulesets.v1.rule_specs import CheckParameters, HostCondition, Topic
+from cmk.rulesets.v1.rule_specs import CheckParameters, HostAndItemCondition, Topic
 
 
 def _parameter_form_cmk_linux_flexlm():
@@ -36,7 +36,7 @@ def _parameter_form_cmk_linux_flexlm():
 rule_spec_cmk_linux_flexlm = CheckParameters(
     name="cmk_linux_flexlm",
     topic=Topic.APPLICATIONS,
-    condition=HostCondition(),
+    condition=HostAndItemCondition(item_title=Title("License feature")),
     parameter_form=_parameter_form_cmk_linux_flexlm,
     title=Title("Linux FlexLM License Status"),
 )
