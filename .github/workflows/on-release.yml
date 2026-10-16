@@ -1,0 +1,46 @@
+name: OnRelease
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: run tests
+        run: uv run pytest tests
+
+      - name: Build package
+        run: uv run mkp-forge -v package build
+
+      # TODO: Replace with upcoming command from mkp-forge
+      - name: Read package info
+        id: info
+        run: |
+          python3 - >> "$GITHUB_OUTPUT" <<'EOF'
+          import ast, pathlib
+          i = ast.literal_eval(pathlib.Path("cmk_linux_flexlm.info").read_text())
+          print(f"name={i['name']}")
+          print(f"version={i['version']}")
+          print(f"file={i['name']}-{i['version']}.mkp")
+          EOF
+
+      # TODO: Replace with upcoming command from mkp-forge
+      - name: Verify tag matches package version
+        run: test "${{ github.event.release.tag_name }}" = "${{ steps.info.outputs.version }}"
+
+      - name: Upload package
+        uses: actions/upload-artifact@v7
+        with:
+          name: mkp-forge-package
+          path: ${{ steps.info.outputs.file }}
+          archive: false
