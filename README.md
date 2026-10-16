@@ -14,5 +14,20 @@ and their total, along with license expiry dates.
 
 ## Installation of the MKP
 
-MKP installation and packaging instructions are not available yet; the
-installation logic has not been implemented.
+Login into your site and provide the mkp file (for example via scp).
+
+```bash
+mkp add cmk_linux_flexlm-1.0.1.mkp
+mkp activate cmk_linux_flexlm
+```
+
+Copy the agent based plugin to the monitored flexlm server.
+
+- Location on site:
+  - `local/share/check_mk/agents/plugins/cmk_linux_flexlm.py`
+- Target location on flexlm server:
+  - `/usr/lib/check_mk_agent/plugins/cmk_linux_flexlm.py`
+
+Run service discovery and accept the deteced services, one for each feature.
+
+Create Service rules and apply them via service label to different amounts of feature licesnes.
