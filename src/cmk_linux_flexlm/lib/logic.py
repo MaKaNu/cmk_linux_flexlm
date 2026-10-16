@@ -55,7 +55,8 @@ def parse_legacy_string_table(rows: Sequence[Sequence[str]]) -> list[LicenseFeat
                 expires=(
                     None
                     if expires == "None"
-                    else datetime.strptime(expires, LEGACY_DATE_FORMAT)
+                    else datetime
+                    .strptime(expires, LEGACY_DATE_FORMAT)
                     .replace(tzinfo=UTC)
                     .date()
                 ),
